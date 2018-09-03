@@ -123,16 +123,14 @@ public class GuiControlsOverride extends GuiControls {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        boolean flag = this.buttonId != null;
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if(this.showInputField) {
             this.inputField.mouseClicked(mouseX, mouseY, mouseButton);
         } else {
             this.dropDown.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        if(flag) {
-            this.saveKeyBinds();
-        }
+        this.saveKeyBinds(); //Too much effort to find out if the reset buttons have been pressed. Easier to do it like this
+
     }
 
     @Override
