@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -40,6 +41,8 @@ public class NoCtrl {
     private static final File settingsLoc = new File(baseLoc, "noctrl.json");
     public static KeyBindSet ACTIVE = KeyBindSet.DEFAULT;
     public static final List<KeyBindSet> ALL_LISTS = Lists.newArrayList();
+
+    public static KeyBinding SCREEN_BINDING = new KeyBinding("key.noctrl.screen", Keyboard.KEY_LMENU, NAME);
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -79,6 +82,8 @@ public class NoCtrl {
 
         }
 
+        ClientRegistry.registerKeyBinding(SCREEN_BINDING);
+
     }
 
     public static Logger getLogger() {
@@ -99,7 +104,7 @@ public class NoCtrl {
     public static void onRenderTick(RenderGameOverlayEvent.Post event) {
         Minecraft mc = Minecraft.getMinecraft();
 
-        boolean keyDown = Keyboard.isKeyDown(Keyboard.KEY_LMENU);
+        boolean keyDown = SCREEN_BINDING.isKeyDown();
         boolean current =  keyDown && mc.currentScreen == null;
         if(needsRelease && keyDown) {
             return;
