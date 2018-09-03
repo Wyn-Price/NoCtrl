@@ -25,6 +25,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.List;
 
 @Mod(modid = NoCtrl.MODID, name = NoCtrl.NAME, version = NoCtrl.VERSION, clientSideOnly = true)
@@ -59,6 +60,7 @@ public class NoCtrl {
                 }
             }
             ALL_LISTS.add(KeyBindSet.DEFAULT);
+            ALL_LISTS.sort(Comparator.comparing(KeyBindSet::getName));
         } else {
             logger.error("Unable to load directory, " + baseLoc.getAbsolutePath() + " and therefore unable to load keybindings");
         }
@@ -174,6 +176,7 @@ public class NoCtrl {
 
     public static void addAndSetCurrent(KeyBindSet list) {
         ALL_LISTS.add(list);
+        ALL_LISTS.sort(Comparator.comparing(KeyBindSet::getName));
         list.setAsCurrent();
     }
 
