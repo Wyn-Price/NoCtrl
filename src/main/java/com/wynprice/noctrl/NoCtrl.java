@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -38,17 +37,17 @@ public class NoCtrl {
 
     public static final File baseLoc = new File(Minecraft.getMinecraft().mcDataDir, "noctrl");
     private static final File settingsLoc = new File(baseLoc, "noctrl.json");
-    public static KeyBindList ACTIVE = KeyBindList.DEFAULT;
-    public static final List<KeyBindList> ALL_LISTS = Lists.newArrayList();
+    public static KeyBindSet ACTIVE = KeyBindSet.DEFAULT;
+    public static final List<KeyBindSet> ALL_LISTS = Lists.newArrayList();
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         //Ensure that the directory is created and the default keybinds exist
-        if(!KeyBindList.DEFAULT.getLocation().exists()) {
+        if(!KeyBindSet.DEFAULT.getLocation().exists()) {
             for (KeyBinding keyBinding : Minecraft.getMinecraft().gameSettings.keyBindings) {
-                KeyBindList.DEFAULT.putOverride(keyBinding, keyBinding.getKeyCode());
+                KeyBindSet.DEFAULT.putOverride(keyBinding, keyBinding.getKeyCode());
             }
-            KeyBindList.DEFAULT.writeToFile();
+            KeyBindSet.DEFAULT.writeToFile();
         }
         //
         File[] files = baseLoc.listFiles((dir, name) -> name.endsWith(".txt"));
@@ -56,17 +55,17 @@ public class NoCtrl {
             for (File file : files) {
                 String name = FilenameUtils.getBaseName(file.getName());
                 if(!name.equals("default")) {
-                    ALL_LISTS.add(new KeyBindList(name));
+                    ALL_LISTS.add(new KeyBindSet(name));
                 }
             }
-            ALL_LISTS.add(KeyBindList.DEFAULT);
+            ALL_LISTS.add(KeyBindSet.DEFAULT);
         } else {
             logger.error("Unable to load directory, " + baseLoc.getAbsolutePath() + " and therefore unable to load keybindings");
         }
         //Load and apply the settings
         try {
             JsonObject json = JsonUtils.getJsonObject(new JsonParser().parse(new FileReader(settingsLoc)), "root");
-            for (KeyBindList list : ALL_LISTS) {
+            for (KeyBindSet list : ALL_LISTS) {
                 if(list.getName().equals(json.get("active").getAsString())) {
                     ACTIVE = list;
                     break;
@@ -114,7 +113,7 @@ public class NoCtrl {
 
         RenderHelper.enableGUIStandardItemLighting();
         if(current) {
-            KeyBindList mouse = getUnderMouse();
+            KeyBindSet mouse = getUnderMouse();
             ScaledResolution resolution = new ScaledResolution(mc);
             double theta = ((Math.PI*2D) / ALL_LISTS.size());
             for (int i = 0; i < ALL_LISTS.size(); i++) {
@@ -122,7 +121,7 @@ public class NoCtrl {
                 double xPos = Math.sin(angle) * 75 + resolution.getScaledWidth_double() / 2D;
                 double yPos = -Math.cos(angle) * 75 + resolution.getScaledHeight_double() / 2D;
 
-                KeyBindList list = ALL_LISTS.get(i);
+                KeyBindSet list = ALL_LISTS.get(i);
 
                 mc.fontRenderer.drawStringWithShadow(list.getName(), (int) (xPos - mc.fontRenderer.getStringWidth(list.getName()) / 2D), (int) yPos, -1);
                 GlStateManager.pushMatrix();
@@ -153,19 +152,19 @@ public class NoCtrl {
         if(previousPressed && Mouse.isButtonDown(0)) {
             previousPressed = false;
             needsRelease = true;
-            KeyBindList list = getUnderMouse();
+            KeyBindSet list = getUnderMouse();
             if(list != null) {
                 list.setAsCurrent();
             }
         }
     }
 
-    public static void addAndSetCurrent(KeyBindList list) {
+    public static void addAndSetCurrent(KeyBindSet list) {
         ALL_LISTS.add(list);
         list.setAsCurrent();
     }
 
-    private static KeyBindList getUnderMouse() {
+    private static KeyBindSet getUnderMouse() {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution resolution = new ScaledResolution(mc);
 
@@ -177,7 +176,7 @@ public class NoCtrl {
             double xPos = Math.sin(angle) * 75 + resolution.getScaledWidth_double() / 2D;
             double yPos = -Math.cos(angle) * 75 + resolution.getScaledHeight_double() / 2D;
 
-            KeyBindList list = ALL_LISTS.get(i);
+            KeyBindSet list = ALL_LISTS.get(i);
 
             double width = mc.fontRenderer.getStringWidth(list.getName());
             double size = Math.max(45, width);

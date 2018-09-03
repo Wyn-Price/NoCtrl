@@ -17,11 +17,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-public class KeyBindList {
+public class KeyBindSet {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
 
-    public static final KeyBindList DEFAULT = new KeyBindList("default");
+    public static final KeyBindSet DEFAULT = new KeyBindSet("default");
 
     private final String name;
     private final File location;
@@ -29,7 +29,7 @@ public class KeyBindList {
 
     private Item model = Items.AIR;
 
-    public KeyBindList(String name) {
+    public KeyBindSet(String name) {
         this.name = name;
         this.location = new File(NoCtrl.baseLoc,name + ".txt");
 
@@ -100,9 +100,9 @@ public class KeyBindList {
         mc.player.sendStatusMessage(new TextComponentTranslation("noctrl.current_changed", this.name), true);
     }
 
-    public KeyBindList copy() {
+    public KeyBindSet copy() {
         String newName = this.name + "_copy"; //Have some type of numbered system ?
-        KeyBindList list = new KeyBindList(newName);
+        KeyBindSet list = new KeyBindSet(newName);
         list.keyBindMap.putAll(this.keyBindMap);
         list.setModel(this.model);
         try {
@@ -113,8 +113,8 @@ public class KeyBindList {
         return list;
     }
 
-    public KeyBindList rename(String newName) {
-        KeyBindList list = new KeyBindList(newName);
+    public KeyBindSet rename(String newName) {
+        KeyBindSet list = new KeyBindSet(newName);
         list.keyBindMap.putAll(this.keyBindMap);
         list.setModel(this.model);
         try {

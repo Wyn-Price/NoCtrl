@@ -115,7 +115,7 @@ public class GuiControlsOverride extends GuiControls {
         this.renameFolder.visible = this.renameFolder.enabled = !this.yesNoScreen;
         this.editIcon.visible = this.editIcon.enabled = !this.yesNoScreen;
 
-        if(NoCtrl.ACTIVE == KeyBindList.DEFAULT) {
+        if(NoCtrl.ACTIVE == KeyBindSet.DEFAULT) {
             this.removeFolder.enabled = this.renameFolder.enabled = false;
         }
         super.updateScreen();
