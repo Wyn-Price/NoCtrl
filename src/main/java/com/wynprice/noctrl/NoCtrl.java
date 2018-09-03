@@ -1,10 +1,7 @@
 package com.wynprice.noctrl;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiControls;
@@ -75,8 +72,10 @@ public class NoCtrl {
                     break;
                 }
             }
-        } catch (FileNotFoundException e) {
-            logger.error("Unable to load settings", e);
+        } catch (JsonParseException e) {
+            logger.error("Unable to parse settings file", e);
+        } catch (FileNotFoundException ignored) {
+
         }
 
     }
