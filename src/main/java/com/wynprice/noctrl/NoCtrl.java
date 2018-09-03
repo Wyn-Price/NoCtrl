@@ -135,7 +135,12 @@ public class NoCtrl {
                     GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
                     double width = mc.fontRenderer.getStringWidth(list.getName());
                     double size = Math.max(45, width);
-                    Gui.drawRect((int)(xPos - size / 2D), (int)(yPos - (size - 9)), (int)(xPos + size / 2D), (int)(yPos + 9), list == mouse ? 0x1199bbff : 0x20219100);
+                    if(list == mouse) {
+                        drawBox((int)(xPos - size / 2D), (int)(yPos - (size - 9)), (int)(xPos + size / 2D), (int)(yPos + 9), 1, 0x1199bbff, -1);
+                    }
+                    if(list == ACTIVE) {
+                        drawBox((int)(xPos - size / 2D), (int)(yPos - (size - 9)), (int)(xPos + size / 2D), (int)(yPos + 9), 1, 0x20219100, -1);
+                    }
                     GlStateManager.disableAlpha();
                     GlStateManager.enableBlend();
                     GlStateManager.color(1f, 1f, 1f, 1f);
@@ -145,6 +150,14 @@ public class NoCtrl {
         }
         RenderHelper.disableStandardItemLighting();
         previousPressed = current;
+    }
+
+    private static void drawBox(int left, int top, int right, int bottom, int borderSize, int insideColor, int borderColor) {
+        Gui.drawRect(left, top, right, bottom, insideColor);
+        Gui.drawRect(left, top, right, top + borderSize, borderColor);
+        Gui.drawRect(left, bottom, right, bottom - borderSize, borderColor);
+        Gui.drawRect(left, top, left + borderSize, bottom, borderColor);
+        Gui.drawRect(right, top, right - borderSize, bottom, borderColor);
     }
 
     @SubscribeEvent
