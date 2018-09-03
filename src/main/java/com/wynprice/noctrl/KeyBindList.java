@@ -153,6 +153,6 @@ public class KeyBindList {
     }
 
     public Item getModel() {
-        return model;
+        return this.model == null || this.model == Items.AIR ? Item.getItemFromBlock(Blocks.STONE) : this.model;
     }
 }
