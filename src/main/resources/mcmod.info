@@ -1,0 +1,9 @@
+[
+  {
+    "modid": "noctrl",
+    "name": "NoCtrl",
+    "description": "Adds keybind sets to allow for easy management of keybinds.",
+    "authorList": ["Wyn Price"],
+    "credits": "lukisforgets for the idea"
+  }
+]
