@@ -18,3 +18,5 @@ noctrl.gui.no.desc=Cancel
 noctrl.gui.task.add=The name of the new set
 noctrl.gui.task.rename=The new name of the set
 noctrl.gui.task.icon=The registry name of the item to use for the icon
+
+key.noctrl.screen=No Ctrl Screen
