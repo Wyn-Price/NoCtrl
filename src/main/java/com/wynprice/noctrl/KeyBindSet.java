@@ -98,6 +98,8 @@ public class KeyBindSet {
         NoCtrl.ACTIVE = this;
         NoCtrl.saveSettings();
         mc.player.sendStatusMessage(new TextComponentTranslation("noctrl.current_changed", this.name), true);
+
+        this.writeToFile(); //Ensure current is written
     }
 
     public KeyBindSet copy() {

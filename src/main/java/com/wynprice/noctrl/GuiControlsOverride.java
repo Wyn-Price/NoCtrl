@@ -1,10 +1,7 @@
 package com.wynprice.noctrl;
 
 import com.google.common.collect.Lists;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiControls;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -51,6 +48,7 @@ public class GuiControlsOverride extends GuiControls {
         this.inputField = new GuiTextField(5000, mc.fontRenderer, this.width / 2 - 155, 66, 150, 20);
         this.inputField.setCanLoseFocus(false);
         this.inputField.setFocused(true);
+        this.inputField.setMaxStringLength(12);
 
         this.addFolder = this.addButton(new GuiTypeButton(5001, this.width / 2 + 5, 66, 20, 20, TextFormatting.GREEN + "+", "add", s -> NoCtrl.addAndSetCurrent(NoCtrl.ACTIVE.copy().rename(s)), I18n.format("noctrl.gui.add.desc1"), I18n.format("noctrl.gui.add.desc2")));
         this.removeFolder = this.addButton(new GuiTypeButton(5002, this.width / 2 + 30, 66, 20, 20, TextFormatting.RED + "-", "", s -> NoCtrl.ACTIVE.delete(), I18n.format("noctrl.gui.delete.desc")));
@@ -123,13 +121,25 @@ public class GuiControlsOverride extends GuiControls {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        boolean flag = this.buttonId != null;
+        if(!flag) {
+            for (int i = 0; i < this.keyBindingList.listEntries.length; i++) {
+                GuiListExtended.IGuiListEntry entry = this.keyBindingList.getListEntry(i);
+                if(entry instanceof GuiKeyBindingList.KeyEntry && ((GuiKeyBindingList.KeyEntry) entry).btnReset.mousePressed(this.mc, mouseX, mouseY)) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if(this.showInputField) {
             this.inputField.mouseClicked(mouseX, mouseY, mouseButton);
         } else {
             this.dropDown.mouseClicked(mouseX, mouseY, mouseButton);
         }
-        this.saveKeyBinds(); //Too much effort to find out if the reset buttons have been pressed. Easier to do it like this
+        if(flag) {
+            this.saveKeyBinds();
+        }
 
     }
 

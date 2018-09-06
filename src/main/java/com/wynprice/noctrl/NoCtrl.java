@@ -140,7 +140,7 @@ public class NoCtrl {
                 if(list == mouse || ACTIVE == list) {
                     GlStateManager.enableAlpha();
                     GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-                    double width = mc.fontRenderer.getStringWidth(list.getName());
+                    double width = mc.fontRenderer.getStringWidth(list.getName()) + 4;
                     double size = Math.max(45, width);
                     if(list == mouse) {
                         drawBox((int)(xPos - size / 2D), (int)(yPos - (size - 9)), (int)(xPos + size / 2D), (int)(yPos + 9), 1, 0x1199bbff, -1);
@@ -199,7 +199,7 @@ public class NoCtrl {
 
             KeyBindSet list = ALL_LISTS.get(i);
 
-            double width = mc.fontRenderer.getStringWidth(list.getName());
+            double width = mc.fontRenderer.getStringWidth(list.getName()) + 4;
             double size = Math.max(45, width);
             if(Math.abs(mouseX - xPos) <= size / 2D && mouseY <= yPos + 9 && mouseY >= yPos - (size - 9)) {
                 return list;

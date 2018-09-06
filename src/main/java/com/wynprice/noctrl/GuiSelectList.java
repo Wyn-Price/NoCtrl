@@ -82,7 +82,7 @@ public class GuiSelectList {
                     if(relY <= CELL_HEIGHT) {
                         this.open = !this.open;
                         return;
-                    } else {
+                    } else if(this.open){
                         for (int i = 0; i < NoCtrl.ALL_LISTS.size(); i++) {
                             if(relY <= CELL_HEIGHT * (i + 2)) {
                                 NoCtrl.ALL_LISTS.get(i).setAsCurrent();
