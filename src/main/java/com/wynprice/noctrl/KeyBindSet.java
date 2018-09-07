@@ -38,7 +38,9 @@ public class KeyBindSet {
             for (int i = 0; i < lines.size(); i++) {
                 String line = lines.get(i);
                 if(i == 0) {
-                    this.setModel(ForgeRegistries.ITEMS.getValue(new ResourceLocation(line)));
+
+                    Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(line)); //Dont call #setModel as it causes this to write to file, when the file hasn't serialized
+                    this.model = item == null || item == Items.AIR ? Item.getItemFromBlock(Blocks.STONE) : item;
                     continue;
                 }
                 for (KeyBinding keyBinding : mc.gameSettings.keyBindings) {
