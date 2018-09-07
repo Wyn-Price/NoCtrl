@@ -2,6 +2,7 @@ package com.wynprice.noctrl;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
+import com.wynprice.noctrl.compact.GuiControlsOverrideControlling;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiControls;
@@ -13,9 +14,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.apache.commons.io.FilenameUtils;
@@ -43,6 +48,8 @@ public class NoCtrl {
     public static final List<KeyBindSet> ALL_LISTS = Lists.newArrayList();
 
     public static KeyBinding SCREEN_BINDING = new KeyBinding("key.noctrl.screen", Keyboard.KEY_LMENU, NAME);
+
+    public static final boolean isControlling = Loader.isModLoaded("controlling");
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -84,16 +91,24 @@ public class NoCtrl {
 
         ClientRegistry.registerKeyBinding(SCREEN_BINDING);
 
+        if(isControlling) {
+            registerControllingSupport();
+        }
+    }
+
+    @Optional.Method(modid = "controlling")
+    public static void registerControllingSupport() {
+        MinecraftForge.EVENT_BUS.register(GuiControlsOverrideControlling.class);
     }
 
     public static Logger getLogger() {
         return logger;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGuiOpen(GuiOpenEvent event) {
-        if(event.getGui() != null && event.getGui().getClass() == GuiControls.class) { //TODO: AT ?
-            event.setGui(new GuiControlsOverride(((GuiControls)event.getGui()).parentScreen, Minecraft.getMinecraft().gameSettings));
+        if(event.getGui() != null && event.getGui() instanceof GuiControls && !isControlling) {
+            event.setGui(new GuiControlsOverride(((GuiControls) event.getGui()).parentScreen, Minecraft.getMinecraft().gameSettings));
         }
     }
 
