@@ -226,6 +226,7 @@ public class NoCtrl {
                     }
                 }
             }
+            GlStateManager.color(1f, 1f, 1f, 1f);
             GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
             GlStateManager.disableAlpha();
             GlStateManager.enableBlend();
@@ -237,10 +238,14 @@ public class NoCtrl {
 
     private static void drawBox(int left, int top, int right, int bottom, int borderSize, int insideColor, int borderColor) {
         Gui.drawRect(left, top, right, bottom, insideColor);
+        GlStateManager.color(1f, 1f, 1f, 1f);
+
         Gui.drawRect(left, top, right, top + borderSize, borderColor);
         Gui.drawRect(left, bottom, right, bottom - borderSize, borderColor);
         Gui.drawRect(left, top, left + borderSize, bottom, borderColor);
         Gui.drawRect(right, top, right - borderSize, bottom, borderColor);
+        GlStateManager.color(1f, 1f, 1f, 1f);
+
     }
 
     @SubscribeEvent
