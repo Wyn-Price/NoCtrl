@@ -116,6 +116,17 @@ public class GuiControlsOverride extends GuiControls {
         if(NoCtrl.ACTIVE == KeyBindSet.DEFAULT) {
             this.removeFolder.enabled = this.renameFolder.enabled = false;
         }
+
+        boolean matched = false;
+        if(this.yesNoScreen && (this.currentTask.equals("add") || this.currentTask.equals("rename"))) {
+            for (KeyBindSet list : NoCtrl.ALL_LISTS) {
+                if(list.getName().equalsIgnoreCase(this.inputField.getText())) {
+                    matched = true;
+                }
+            }
+        }
+        this.yesAction.enabled = !matched;
+
         super.updateScreen();
     }
 
@@ -166,7 +177,7 @@ public class GuiControlsOverride extends GuiControls {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if(keyCode == Keyboard.KEY_RETURN && this.output != null) {
+        if(keyCode == Keyboard.KEY_RETURN && this.output != null && this.yesAction.enabled) {
             this.output.accept(this.inputField.getText().trim());
             this.inputField.setText("");
             this.showInputField = false;
