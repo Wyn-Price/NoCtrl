@@ -109,6 +109,7 @@ public class KeyBindSet {
     public KeyBindSet copy() {
         String newName = this.name + "_copy"; //Have some type of numbered system ?
         KeyBindSet list = new KeyBindSet(newName);
+        this.ensureValidity();
         list.keyBindMap.putAll(this.keyBindMap);
         list.setModel(this.model);
         try {
@@ -121,6 +122,7 @@ public class KeyBindSet {
 
     public KeyBindSet rename(String newName) {
         KeyBindSet list = new KeyBindSet(newName);
+        this.ensureValidity();
         list.keyBindMap.putAll(this.keyBindMap);
         list.setModel(this.model);
         try {
