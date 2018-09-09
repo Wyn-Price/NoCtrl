@@ -10,6 +10,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -48,7 +49,6 @@ public class GuiControlsOverride extends GuiControls {
         this.inputField = new GuiTextField(5000, mc.fontRenderer, this.width / 2 - 155, 66, 150, 20);
         this.inputField.setCanLoseFocus(false);
         this.inputField.setFocused(true);
-        this.inputField.setMaxStringLength(12);
 
         this.addFolder = this.addButton(new GuiTypeButton(5001, this.width / 2 + 5, 66, 20, 20, TextFormatting.GREEN + "+", "add", s -> NoCtrl.addAndSetCurrent(NoCtrl.ACTIVE.copy().rename(s)), I18n.format("noctrl.gui.add.desc1"), I18n.format("noctrl.gui.add.desc2")));
         this.removeFolder = this.addButton(new GuiTypeButton(5002, this.width / 2 + 30, 66, 20, 20, TextFormatting.RED + "-", "", s -> NoCtrl.ACTIVE.delete(), I18n.format("noctrl.gui.delete.desc")));
@@ -140,7 +140,28 @@ public class GuiControlsOverride extends GuiControls {
         if(flag) {
             this.saveKeyBinds();
         }
+    }
 
+    @Override
+    public void handleMouseInput() throws IOException {
+        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        GuiKeyBindingList old = this.keyBindingList;
+        if(this.dropDown.isMouseOver(x, y)) {
+            //Create a dummy list with the #isMouseYWithinSlotBounds set to false, meaning that the mouse inputs never get activated.
+            this.keyBindingList = new GuiKeyBindingList(this, this.mc) {
+                @Override
+                public boolean isMouseYWithinSlotBounds(int p_148141_1_) {
+                    return false;
+                }
+            };
+            int mouseInput = Mouse.getEventDWheel();
+            if(mouseInput != 0) {
+                this.dropDown.scroll(mouseInput < 0 ? -1 : 1);
+            }
+        }
+        super.handleMouseInput();
+        this.keyBindingList = old;
     }
 
     @Override
