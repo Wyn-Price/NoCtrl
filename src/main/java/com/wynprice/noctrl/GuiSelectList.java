@@ -50,7 +50,7 @@ public class GuiSelectList {
         mc.fontRenderer.drawString(NoCtrl.ACTIVE.getName(), this.xPos + 26, this.yPos + CELL_HEIGHT / 2 - 4, -1);
         if(this.open) {
 			//scroll can point beyond what exists
-			this.scroll = Math.min(this.scroll,NoCtrl.ALL_LISTS.size()-CELL_MAX);
+			this.scroll = MathHelper.clamp(this.scroll, 0, Math.max(NoCtrl.ALL_LISTS.size() - CELL_MAX, 0));
             for (int i = 0; i < listedCells; i++) {
                 int actual = i + this.scroll;
                 int yStart = this.yPos + CELL_HEIGHT * (i + 1);
