@@ -49,7 +49,7 @@ public class GuiSelectList {
         mc.getRenderItem().renderItemIntoGUI(new ItemStack(NoCtrl.ACTIVE.getModel()), this.xPos + 5, this.yPos + 2);
         mc.fontRenderer.drawString(NoCtrl.ACTIVE.getName(), this.xPos + 26, this.yPos + CELL_HEIGHT / 2 - 4, -1);
         if(this.open) {
-            for (int i = 0; i < CELL_MAX; i++) {
+            for (int i = 0; i < listedCells; i++) {
                 int actual = i + this.scroll;
                 int yStart = this.yPos + CELL_HEIGHT * (i + 1);
                 Gui.drawRect(this.xPos, yStart, this.xPos + CELL_WIDTH, yStart + CELL_HEIGHT, insideSelectionColor);
@@ -93,7 +93,7 @@ public class GuiSelectList {
                         for (int i = 0; i < NoCtrl.ALL_LISTS.size(); i++) {
                             int i1 = i + this.scroll;
                             if(relY <= CELL_HEIGHT * (i1 + 2)) {
-                                NoCtrl.ALL_LISTS.get(i1).setAsCurrent();
+                                NoCtrl.ALL_LISTS.get(i1 + this.scroll).setAsCurrent();
                                 break;
                             }
                         }
