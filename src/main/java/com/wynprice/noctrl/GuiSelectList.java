@@ -92,8 +92,8 @@ public class GuiSelectList {
                     } else if(this.open){
                         for (int i = 0; i < NoCtrl.ALL_LISTS.size(); i++) {
                             int i1 = i + this.scroll;
-                            if(relY <= CELL_HEIGHT * (i1 + 2)) {
-                                NoCtrl.ALL_LISTS.get(i1 + this.scroll).setAsCurrent();
+                            if(relY <= CELL_HEIGHT * (i + 2)) {
+                                NoCtrl.ALL_LISTS.get(i1).setAsCurrent();
                                 break;
                             }
                         }
