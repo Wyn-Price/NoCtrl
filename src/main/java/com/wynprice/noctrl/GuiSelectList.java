@@ -49,6 +49,8 @@ public class GuiSelectList {
         mc.getRenderItem().renderItemIntoGUI(new ItemStack(NoCtrl.ACTIVE.getModel()), this.xPos + 5, this.yPos + 2);
         mc.fontRenderer.drawString(NoCtrl.ACTIVE.getName(), this.xPos + 26, this.yPos + CELL_HEIGHT / 2 - 4, -1);
         if(this.open) {
+			//scroll can point beyond what exists
+			this.scroll = Math.min(this.scroll,NoCtrl.ALL_LISTS.size()-CELL_MAX);
             for (int i = 0; i < listedCells; i++) {
                 int actual = i + this.scroll;
                 int yStart = this.yPos + CELL_HEIGHT * (i + 1);
